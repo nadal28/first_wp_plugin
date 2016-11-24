@@ -20,7 +20,6 @@ if (!class_exists('OSRSSImporter')) {
 		function __construct () {
 			add_action('admin_menu', array(&$this, 'os_rss_importer_menu'));
 			add_action('plugins_loaded', array(&$this, 'load_text_domain'), 10);
-			add_filter('login_redirect', array(&$this, 'my_loginredrect'), 10, 3);
 			add_action('rss_import_posts', array(&$this,'check_feed'));
 			register_deactivation_hook(RSSIMPPATH . 'os_rss_importer.php', array(&$this, 'clean_cron_job'));
 		}
@@ -141,7 +140,6 @@ if (!class_exists('OSRSSImporter')) {
 
 
 				$id = wp_insert_post( array(
-					'post_date' => date('Y-m-d H:i:s', strtotime($date)),
 					'post_status' => 'pending',
 					'post_title' => $titulo,
 					'post_content' => $contenido,
@@ -150,6 +148,7 @@ if (!class_exists('OSRSSImporter')) {
 
 				add_post_meta($id, 'link_imagen', $image);
 				add_post_meta($id, 'link_noticia', $link);
+				add_post_meta($id, 'fecha_noticia', date('Y-m-d H:i:s', strtotime($date)));
 
 			}
 		}
